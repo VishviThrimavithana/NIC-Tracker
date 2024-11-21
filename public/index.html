@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIC Tracker</title>
+    <link rel="stylesheet" href="../dist/output.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@rive-app/canvas@2.20.0"></script>
+</head>
+
+<body class="bg-[#001122] min-h-screen">
+    <div class="flex-row sm:test-l md:text-3xl lg:text-3xl">
+        <div class="pt-[30px] text-white font-mono flex justify-center align-center">Welcome!</div>
+        <div class="text-white font-mono flex justify-center align-center">This Is Your NIC Tracker</div>
+    </div>
+    
+    <div class="bg-[#001122] flex justify-center items-center pt-[100px]">
+        <div class="box bg-[#155e75] p-8 w-[400px] rounded-lg">
+            <div class="qr-header">
+                <h1 class="text-white sm:test-l md:text-3xl lg:text-3xl mb-6 text-center uppercase">Enter Your NIC Number here ⬇️</h1>
+               
+               
+               <form id="nicForm">
+                <input type="text" id="nicInput" name="nic" placeholder="ex : 996758876V / 200065677766"
+                    class="w-full p-3 rounded-lg text-lg border-2 border-[#7fb7c9] mb-4" required>
+                <button type="submit"
+                    class="bg-[#7fb7c9] hover:bg-[#5a8ca7] text-white font-bold py-2 px-4 rounded w-full">
+                    Submit
+                </button>
+               </form>
+               <!-- <div id="resultContainer" class="text-black font-bold bg-white h-[85px] text-center mt-4 w-full p-3 rounded-lg text-lg border-2 "></div> -->
+
+            </div>
+        </div>
+    </div>
+   
+    <div class="flex justify-center items-center">
+        <canvas id="riveCanvas" class="!sm:w-[300px] !sm:h-[150px] md:w-[900px] md:h-[450px] lg:w-[900px] lg:h-[450px] position-absolute"></canvas>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script src="script.js"></script>
+        <script>
+
+const canvas = document.getElementById('riveCanvas');
+const dpr = window.devicePixelRatio || 1; // Get the device pixel ratio
+
+// Set higher resolution for canvas
+canvas.width = 500 * dpr;
+canvas.height = 500 * dpr;
+
+// Scale it back down in CSS
+canvas.style.width = '500px';
+canvas.style.height = '500px';
+
+    const riveInstance = new rive.Rive({
+        src: './images/index.riv',
+        canvas: canvas,
+        autoplay: true,
+        fit: rive.Fit.CONTAIN,
+        alignment: rive.Alignment.CENTER
+    });
+
+                document.getElementById('nicForm').addEventListener('submit', async function (event) {
+                    event.preventDefault();
+
+                    const nic = document.getElementById('nicInput').value;
+
+                    sessionStorage.setItem('nic', nic);
+                    window.location.href = 'loading.html';
+
+                    try {
+                        const response = await fetch('/nic', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ nic }),
+                        });
+
+                        console.log("Response status:", response.status);
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            console.log('Response from backend:', result);
+                            displayResult(result.message);
+
+                        } else {
+                            console.error('Server responded with an error status:', response.status);
+                            alert('Something went wrong. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error during fetch:', error);
+                        alert('Failed to connect to the server.');
+                    }
+                });
+
+                function displayResult(message) {
+                    const resultContainer = document.getElementById('resultContainer');
+                    if (resultContainer) {
+                        resultContainer.textContent = message;
+                    } else {
+                        console.error('Result container not found!');
+                    }
+                }
+
+//     function displayResult(message) {
+//         const resultContainer = document.getElementById('resultContainer');
+//         resultContainer.textContent = message;
+   
+//     if (!resultContainer) {
+//         resultContainer = document.createElement('div');
+//         resultContainer.id = 'resultContainer';
+//         resultContainer.classList.add('text-white', 'text-center', 'mt-4');
+//         document.querySelector('.box').appendChild(resultContainer);
+//     }
+//     resultContainer.textContent = message;
+// }
+
+
+        </script>
+
+    </div>
+    
+</body>
+
+</html>

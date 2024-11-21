@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "express": "^4.21.1",
+    "lottie-web": "^5.12.2",
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.6.3"
+  }
+}

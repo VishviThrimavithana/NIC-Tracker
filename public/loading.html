@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <link rel="stylesheet" href="../dist/output.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@rive-app/canvas@2.20.0"></script>
+
+</head>
+
+<body class="bg-[#001122] min-h-screen">
+    <div class="flex-row ">
+    </div>
+    
+    <div class="bg-[#001122] flex justify-center items-center pt-[180px]">
+        <h1 class="text-white text-3xl mb-6 text-center uppercase">Scanning....</h1>
+    </div>
+   
+    <div class="flex justify-center items-center pt-[80px]">
+        <canvas id="riveCanvas" class="w-[600px] h-[300px]"></canvas>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script src="script.js"></script>
+        <script>
+
+    const canvas = document.getElementById('riveCanvas');
+    const dpr = window.devicePixelRatio || 1;
+
+
+    canvas.width = 500 * dpr;
+    canvas.height = 500 * dpr;
+
+    canvas.style.width = '500px';
+    canvas.style.height = '500px';
+
+    const riveInstance = new rive.Rive({
+        src: './images/animated.riv',
+        canvas: canvas,
+        autoplay: true,
+        fit: rive.Fit.CONTAIN,
+        alignment: rive.Alignment.CENTER
+    });
+
+
+    const nic = sessionStorage.getItem('nic'); 
+
+if (!nic) {
+    alert("No NIC provided. Redirecting back.");
+    window.location.href = 'index.html'; 
+} else {
+   
+    fetch('/nic', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nic }),
+    })
+        .then(response => response.json())
+        .then(result => {
+            console.log('Backend response:', result);
+
+            window.location.href = `result.html?message=${encodeURIComponent(result.message)}`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+}
+
+        </script>
+
+    </div>
+    
+</body>
+</html>

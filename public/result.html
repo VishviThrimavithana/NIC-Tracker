@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" href="../dist/output.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@rive-app/canvas@2.20.0"></script>
+
+</head>
+
+<body class="bg-[#001122] min-h-screen">
+    <div class="flex-row ">
+    </div>
+    
+    <div class="bg-[#001122] flex justify-center items-center pt-[150px]">
+        <h1 class="text-white text-3xl mb-6 text-center uppercase"></h1>
+      <div class=" box bg-[#155e75] p-8 w-[400px] rounded-lg">
+        <div id="resultContainer" class="w-full text-black font-bold bg-white h-[85px] text-center mt-4 p-3 rounded-lg text-lg border-2 "></div>
+      </div>
+    </div>
+   
+    <div class="flex justify-center items-center pt-[80px]">
+        <canvas id="riveCanvasBoy" class="w-[600px] h-[300px]"></canvas>
+        <canvas id="riveCanvasGirl" class="w-[600px] h-[300px]"></canvas>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script src="script.js"></script>
+        <script>
+
+        const params = new URLSearchParams(window.location.search);
+        const message = params.get('message');
+        document.getElementById('resultContainer').textContent = message;
+    
+        const canvasBoy = document.getElementById('riveCanvasBoy');
+           const dpr = window.devicePixelRatio || 1;
+            canvasBoy.width = 500 * dpr;
+            canvasBoy.height = 500 * dpr;
+            canvasBoy.style.width = '500px';
+            canvasBoy.style.height = '500px';
+            const riveInstanceBoy = new rive.Rive({
+                src: './images/boy.riv',
+                canvas: canvasBoy,
+                autoplay: true,
+                fit: rive.Fit.CONTAIN,
+                alignment: rive.Alignment.CENTER
+            });
+
+            const canvasGirl = document.getElementById('riveCanvasGirl');
+           // const dpr = window.devicePixelRatio || 1;
+            canvasGirl.width = 500 * dpr;
+            canvasGirl.height = 500 * dpr;
+            canvasGirl.style.width = '500px';
+            canvasGirl.style.height = '500px';
+            const riveInstanceGirl = new rive.Rive({
+                src: './images/Girl.riv',
+                canvas: canvasGirl,
+                autoplay: true,
+                fit: rive.Fit.CONTAIN,
+                alignment: rive.Alignment.CENTER
+            });
+
+
+        
+    
+        </script>
+
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.title {
+    animation-duration: 8s;
+    animation-name: slidein;
+    animation-iteration-count: infinite;
+    align-items: center;
+}
+
+@keyframes slidein {
+    0% {
+      margin-left: 0%;
+    }
+    50% {
+      margin-left: 300px;
+    }
+    100% {
+      margin-left: 0%;
+    }
+  }
+
+
+  .custom-bg {
+    background-image: url('../public/images/bg.jpg');
+  }
+
+
+  #resultContainer {
+    font-size: 1.2rem;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#resultContainer {
+  color: black;
+  background-color: white;
+}
